@@ -56,6 +56,13 @@ public class Main {
                     adventureTime.visualizzaElencoAttivita();
                     break;
                 case 7:
+                    System.out.print("Nome guida: ");
+                    nome = readLineSafe(bf);
+                    System.out.print("Codice attestato: ");
+                    String codiceAttestato = readLineSafe(bf);
+                    System.out.print("Specializzazione: ");
+                    String specializzazione = readLineSafe(bf);
+                    adventureTime.registraGuida(nome, codiceAttestato, specializzazione);
                     break;
                 case 9:
                     break;
@@ -74,6 +81,7 @@ public class Main {
             System.out.println("\nMENU:");
             System.out.println("2. Inserisci Nuova Attività");
             System.out.println("4. Visualizza Elenco Attività");
+            System.out.println("7. Registra Nuova Guida");
             System.out.println("0. Esci");
             System.out.print("Scelta: ");
             return Integer.parseInt(bf.readLine());

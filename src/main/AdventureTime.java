@@ -64,4 +64,12 @@ public class AdventureTime {
         }
         System.out.println("----------------------------");
     }
+
+    public void registraGuida(String nome, String codiceAttestato, String specializzazione) {
+        String id = "G" + contatoreGuide;
+        Guida g = new Guida(id, nome, codiceAttestato, specializzazione);
+        this.contatoreGuide++;
+        this.elencoGuide.put(id, g);
+        System.out.println("Operazione Inserimento Guida Conclusa");
+    }
 }
