@@ -1,5 +1,7 @@
 package main;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,27 @@ public class Guida {
         this.codiceAttestato = codiceAttestato;
         this.specializzazione = specializzazione;
         this.sessioniAssegnate = new HashMap<>();
+    }
+
+    public String getSpecializzazione() {
+        return specializzazione;
+    }
+
+    public boolean isDisponibile(LocalDateTime dataOra, Duration durata) {
+        boolean bool;
+        for (Map.Entry<String, SessioneAttivita> entry : sessioniAssegnate.entrySet()) {
+            SessioneAttivita s = entry.getValue();
+            bool = s.compareDataOra(dataOra, durata);
+            if (bool) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void assegnaGuida(SessioneAttivita sessione) {
+        sessioniAssegnate.put(sessione.getId(), sessione);
+        System.out.println("Sessione assegnata alla guida");
     }
 
     @Override

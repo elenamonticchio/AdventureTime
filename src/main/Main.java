@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Objects;
 
 public class Main {
@@ -65,6 +66,20 @@ public class Main {
                     adventureTime.registraGuida(nome, codiceAttestato, specializzazione);
                     break;
                 case 9:
+                    adventureTime.visualizzaElencoAttivita();
+                    if (!adventureTime.getElencoAttivita().isEmpty()) {
+                        System.out.print("Id attività: ");
+                        String attivitaId = readLineSafe(bf);
+                        Map<String, SessioneAttivita> sessioniSenzaGuida = adventureTime.mostraSessioniSenzaGuida(attivitaId);
+                        System.out.print("Id sessione: ");
+                        String sessioneId = readLineSafe(bf);
+                        SessioneAttivita sessione = sessioniSenzaGuida.get(sessioneId);
+                        Map<String, Guida> guideDisponibili = adventureTime.mostraGuideDisponibili(sessione);
+                        System.out.print("Id guida: ");
+                        String guidaId = readLineSafe(bf);
+                        adventureTime.assegnaGuida(sessione, guideDisponibili.get(guidaId));
+                        System.out.print("Operazione completata");
+                    }
                     break;
                 case 0:
                     System.out.println("Uscita.");
@@ -82,6 +97,7 @@ public class Main {
             System.out.println("2. Inserisci Nuova Attività");
             System.out.println("4. Visualizza Elenco Attività");
             System.out.println("7. Registra Nuova Guida");
+            System.out.println("9. Assegna Guida");
             System.out.println("0. Esci");
             System.out.print("Scelta: ");
             return Integer.parseInt(bf.readLine());

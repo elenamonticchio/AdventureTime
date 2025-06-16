@@ -2,6 +2,7 @@ package main;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,14 @@ public class AdventureTime {
         }
 
         return adventureTime;
+    }
+
+    public Map<String, TipoAttivita> getElencoAttivita() {
+        return Collections.unmodifiableMap(elencoAttivita);
+    }
+
+    public Map<String, Guida> getElencoGuide() {
+        return Collections.unmodifiableMap(elencoGuide);
     }
 
     public void inserisciNuovaAttivita(String nome, String descrizione, float prezzo, DifficoltaEnum difficolta) {
@@ -71,5 +80,49 @@ public class AdventureTime {
         this.contatoreGuide++;
         this.elencoGuide.put(id, g);
         System.out.println("Operazione Inserimento Guida Conclusa");
+    }
+
+    public Map<String, SessioneAttivita> mostraSessioniSenzaGuida(String attivitaId) {
+        TipoAttivita attivita = this.elencoAttivita.get(attivitaId);
+        Map<String, SessioneAttivita> sessioniSenzaGuida = attivita.getSessioniSenzaGuida();
+        for (Map.Entry<String, SessioneAttivita> entry : sessioniSenzaGuida.entrySet()) {
+            SessioneAttivita sessione = entry.getValue();
+            System.out.println(sessione);
+        }
+        return sessioniSenzaGuida;
+    }
+
+    public Map<String, Guida> mostraGuideDisponibili(SessioneAttivita sessione) {
+        Map<String, Guida> guideDisponibili = new HashMap<>();
+        LocalDateTime dataOra = sessione.getDataOra();
+        Duration durata = sessione.getDurata();
+        boolean bool;
+        String sessioneId = sessione.getId();
+        int indexOfS = sessioneId.indexOf('S');
+        String attivitaId = null;
+        if (indexOfS != -1) {
+            attivitaId = sessioneId.substring(0, indexOfS);
+        }
+        for (Map.Entry<String, Guida> entry : elencoGuide.entrySet()) {
+            Guida g = entry.getValue();
+            if (g.getSpecializzazione().equalsIgnoreCase(elencoAttivita.get(attivitaId).getNome())) {
+                bool = g.isDisponibile(dataOra, durata);
+            } else {
+                bool = false;
+            }
+            if (bool) {
+                guideDisponibili.put(entry.getKey(), g);
+            }
+        }
+        for (Map.Entry<String, Guida> entry : guideDisponibili.entrySet()) {
+            Guida g = entry.getValue();
+            System.out.println(g);
+        }
+        return guideDisponibili;
+    }
+
+    public void assegnaGuida(SessioneAttivita sessione, Guida guida) {
+        guida.assegnaGuida(sessione);
+        sessione.assegnaGuida(guida);
     }
 }

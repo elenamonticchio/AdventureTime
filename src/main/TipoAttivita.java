@@ -2,6 +2,7 @@ package main;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +27,27 @@ public class TipoAttivita {
     public String getId() {
         return id;
     }
-    
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public float getPrezzo() {
+        return prezzo;
+    }
+
+    public DifficoltaEnum getDifficolta() {
+        return difficolta;
+    }
+
+    public Map<String, SessioneAttivita> getElencoSessioni() {
+        return Collections.unmodifiableMap(elencoSessioni);
+    }
+
     public void inserisciSessioneAttivita(LocalDateTime dataOra, int capienzaMassima, Duration durata) {
         String id = this.id + "S" + contatoreSessioni;
         SessioneAttivita s = new SessioneAttivita(id, dataOra, capienzaMassima, durata);
@@ -37,5 +58,18 @@ public class TipoAttivita {
     @Override
     public String toString() {
         return "ID: " + id + ", Nome: " + nome + ", Descrizione: " + descrizione + ", Prezzo: " + String.format("%.2f", prezzo) + "€, Difficoltà: " + difficolta;
+    }
+
+    public Map<String, SessioneAttivita> getSessioniSenzaGuida() {
+        Map<String, SessioneAttivita> sessioniSenzaGuida = new HashMap<>();
+        boolean bool;
+        for (Map.Entry<String, SessioneAttivita> entry : elencoSessioni.entrySet()) {
+            SessioneAttivita sessione = entry.getValue();
+            bool = sessione.hasGuida();
+            if (!bool) {
+                sessioniSenzaGuida.put(entry.getKey(), sessione);
+            }
+        }
+        return sessioniSenzaGuida;
     }
 }
