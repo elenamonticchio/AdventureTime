@@ -33,6 +33,15 @@ public class SessioneAttivita {
         return guida;
     }
 
+    public void setGuida(Guida guida) {
+        this.guida = guida;
+        System.out.println("Package.Guida assegnata alla sessione");
+    }
+
+    public int getCapienzaMassima() {
+        return capienzaMassima;
+    }
+
     public boolean hasGuida() {
         return guida != null;
     }
@@ -45,18 +54,9 @@ public class SessioneAttivita {
         return startsBeforeOrEqualsThisEnd && endsAfterOrEqualsThisStart;
     }
 
-    public void assegnaGuida(Guida guida) {
-        this.guida = guida;
-        System.out.println("Package.Guida assegnata alla sessione");
-    }
-
     @Override
     public String toString() {
         return "id='" + id + '\'' + ", dataOra=" + dataOra + ", capienzaMassima=" + capienzaMassima + ", durata=" + durata;
-    }
-
-    public int getCapienzaMassima() {
-        return capienzaMassima;
     }
 }
 

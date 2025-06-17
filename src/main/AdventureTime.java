@@ -123,6 +123,6 @@ public class AdventureTime {
 
     public void assegnaGuida(SessioneAttivita sessione, Guida guida) {
         guida.assegnaGuida(sessione);
-        sessione.assegnaGuida(guida);
+        sessione.setGuida(guida);
     }
 }

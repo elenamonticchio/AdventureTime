@@ -56,11 +56,6 @@ public class TipoAttivita {
         elencoSessioni.put(id, s);
     }
 
-    @Override
-    public String toString() {
-        return "ID: " + id + ", Nome: " + nome + ", Descrizione: " + descrizione + ", Prezzo: " + String.format("%.2f", prezzo) + "€, Difficoltà: " + difficolta;
-    }
-
     public Map<String, SessioneAttivita> getSessioniSenzaGuida() {
         Map<String, SessioneAttivita> sessioniSenzaGuida = new HashMap<>();
         boolean bool;
@@ -72,5 +67,10 @@ public class TipoAttivita {
             }
         }
         return sessioniSenzaGuida;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Nome: " + nome + ", Descrizione: " + descrizione + ", Prezzo: " + String.format("%.2f", prezzo) + "€, Difficoltà: " + difficolta;
     }
 }

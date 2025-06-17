@@ -20,8 +20,20 @@ public class Guida {
         this.sessioniAssegnate = new HashMap<>();
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public String getSpecializzazione() {
         return specializzazione;
+    }
+
+    public String getCodiceAttestato() {
+        return codiceAttestato;
+    }
+
+    public Map<String, SessioneAttivita> getSessioniAssegnate() {
+        return sessioniAssegnate;
     }
 
     public boolean isDisponibile(LocalDateTime dataOra, Duration durata) {

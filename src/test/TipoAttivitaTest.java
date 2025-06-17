@@ -1,6 +1,7 @@
 package test;
 
 import main.DifficoltaEnum;
+import main.Guida;
 import main.SessioneAttivita;
 import main.TipoAttivita;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,14 +28,11 @@ public class TipoAttivitaTest {
         LocalDateTime dataOra = LocalDateTime.of(2025, 7, 1, 9, 0);
         Duration durata = Duration.ofHours(2);
 
-
         tipoAttivita.inserisciSessioneAttivita(dataOra, 15, durata);
 
         Map<String, SessioneAttivita> sessioni = tipoAttivita.getElencoSessioni();
 
-
         assertEquals(1, sessioni.size());
-
 
         assertTrue(sessioni.containsKey("A0S0"));
 
@@ -56,5 +54,42 @@ public class TipoAttivitaTest {
         assertTrue(sessioni.containsKey("A0S0"));
         assertTrue(sessioni.containsKey("A0S1"));
         assertTrue(sessioni.containsKey("A0S2"));
+    }
+
+    @Test
+    void testGetSessioniSenzaGuida_soloSessioniSenzaGuida() {
+        tipoAttivita.inserisciSessioneAttivita(LocalDateTime.now(), 10, Duration.ofHours(2));
+
+        Map<String, SessioneAttivita> senzaGuida = tipoAttivita.getSessioniSenzaGuida();
+
+        assertEquals(1, senzaGuida.size());
+        assertTrue(senzaGuida.values().stream().noneMatch(SessioneAttivita::hasGuida));
+    }
+
+    @Test
+    void testGetSessioniSenzaGuida_conSessioneConGuida() {
+        tipoAttivita.inserisciSessioneAttivita(LocalDateTime.now(), 10, Duration.ofHours(2));
+        SessioneAttivita sessione = tipoAttivita.getElencoSessioni().values().iterator().next();
+
+        Guida guida = new Guida("G1", "Marco", "1234", "Trekking");
+        sessione.setGuida(guida);
+
+        Map<String, SessioneAttivita> senzaGuida = tipoAttivita.getSessioniSenzaGuida();
+
+        assertEquals(0, senzaGuida.size());
+    }
+
+    @Test
+    void testGetSessioniSenzaGuida_miste() {
+        tipoAttivita.inserisciSessioneAttivita(LocalDateTime.now(), 10, Duration.ofHours(2));
+        tipoAttivita.inserisciSessioneAttivita(LocalDateTime.now().plusDays(1), 10, Duration.ofHours(2));
+
+        SessioneAttivita sessioneConGuida = tipoAttivita.getElencoSessioni().values().iterator().next();
+        sessioneConGuida.setGuida(new Guida("G2", "Laura", "Bianchi", "Trekking"));
+
+        Map<String, SessioneAttivita> senzaGuida = tipoAttivita.getSessioniSenzaGuida();
+
+        assertEquals(1, senzaGuida.size());
+        assertTrue(senzaGuida.values().stream().noneMatch(SessioneAttivita::hasGuida));
     }
 }
