@@ -1,9 +1,6 @@
 package test;
 
-import main.DifficoltaEnum;
-import main.Guida;
-import main.SessioneAttivita;
-import main.TipoAttivita;
+import main.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,8 +8,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TipoAttivitaTest {
 
@@ -91,5 +87,27 @@ public class TipoAttivitaTest {
 
         assertEquals(1, senzaGuida.size());
         assertTrue(senzaGuida.values().stream().noneMatch(SessioneAttivita::hasGuida));
+    }
+
+    @Test
+    void testEliminaSessione() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        tipoAttivita.inserisciSessioneAttivita(LocalDateTime.now(), 10, Duration.ofHours(2));
+
+        // Recupero la sessione
+        SessioneAttivita sessione = tipoAttivita.getElencoSessioni().values().iterator().next();
+        String sessioneId = sessione.getId();
+
+        // Assegno la guida
+        Guida guida = new Guida("G1", "Marco", "Rossi", "Trekking");
+        guida.assegnaGuida(sessione);
+        sessione.setGuida(guida);
+
+        // Elimino la sessione
+        tipoAttivita.eliminaSessione(sessioneId);
+
+        // Verifiche
+        assertFalse(tipoAttivita.getElencoSessioni().containsKey(sessioneId));
+        assertFalse(guida.getSessioniAssegnate().containsKey(sessioneId));
     }
 }

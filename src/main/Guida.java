@@ -53,9 +53,15 @@ public class Guida {
         System.out.println("Sessione assegnata alla guida");
     }
 
+    public void rimuoviSessione(String sessioneId) {
+        sessioniAssegnate.remove(sessioneId);
+        System.out.println("Sessione rimossa dalla guida");
+    }
+
     @Override
     public String toString() {
         return "id='" + id + '\'' + ", nome='" + nome + '\'' + ", codiceAttestato='" + codiceAttestato + '\'' + ", specializzazione='" + specializzazione + '\'';
     }
+
 }
 

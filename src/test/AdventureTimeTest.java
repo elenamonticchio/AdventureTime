@@ -1,6 +1,7 @@
 package test;
 
 import main.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -249,4 +250,63 @@ public class AdventureTimeTest {
         assertEquals(guida, sessione.getGuida());
         assertTrue(guida.getSessioniAssegnate().containsValue(sessione));
     }
+
+    @Test
+    void testVisualizzaSessioniAttivita() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        adventureTime.inserisciNuovaAttivita("Trekking", "Escursione in montagna", 30.0f, DifficoltaEnum.MEDIA);
+
+        adventureTime.inserisciSessioneAttivita(
+                LocalDateTime.of(2025, 6, 20, 10, 0),
+                20,
+                Duration.ofHours(2)
+        );
+        adventureTime.inserisciSessioneAttivita(
+                LocalDateTime.of(2025, 6, 21, 15, 30),
+                15,
+                Duration.ofHours(3)
+        );
+
+        adventureTime.confermaInserimento();
+
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        String attivitaId = adventureTime.getElencoAttivita().keySet().iterator().next();
+        adventureTime.visualizzaSessioniAttivita(attivitaId);
+
+        String output = outContent.toString().trim();
+        assertTrue(output.contains("A0S0"));
+        assertTrue(output.contains("A0S1"));
+    }
+
+    @Test
+    void testEliminaSessione() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+
+        adventureTime.inserisciNuovaAttivita("Trekking", "Escursione in montagna", 30.0f, DifficoltaEnum.MEDIA);
+        adventureTime.inserisciSessioneAttivita(
+                LocalDateTime.of(2025, 6, 20, 10, 0),
+                20,
+                Duration.ofHours(2)
+        );
+        adventureTime.inserisciSessioneAttivita(
+                LocalDateTime.of(2025, 6, 21, 15, 30),
+                15,
+                Duration.ofHours(3)
+        );
+        adventureTime.confermaInserimento();
+
+        String attivitaId = adventureTime.getElencoAttivita().keySet().iterator().next();
+        adventureTime.visualizzaSessioniAttivita(attivitaId); // setta attivitaCorrente
+
+        TipoAttivita attivita = adventureTime.getElencoAttivita().get(attivitaId);
+        String sessioneId = attivita.getElencoSessioni().keySet().iterator().next();
+
+        adventureTime.eliminaSessione(sessioneId); // stampa corretta attesa
+
+        Assertions.assertFalse(attivita.getElencoSessioni().containsKey(sessioneId));
+    }
+
+
 }

@@ -73,4 +73,14 @@ public class TipoAttivita {
     public String toString() {
         return "ID: " + id + ", Nome: " + nome + ", Descrizione: " + descrizione + ", Prezzo: " + String.format("%.2f", prezzo) + "€, Difficoltà: " + difficolta;
     }
+
+    public void eliminaSessione(String sessioneId) {
+        SessioneAttivita sessione = elencoSessioni.get(sessioneId);
+        Guida guida = sessione.getGuida();
+        if (guida != null) {
+            guida.rimuoviSessione(sessioneId);
+        }
+        this.elencoSessioni.remove(sessioneId);
+        System.out.println("Sessione rimossa correttamente");
+    }
 }

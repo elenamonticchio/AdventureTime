@@ -15,7 +15,7 @@ public class Main {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         int scelta;
         String nome;
-
+        String attivitaId;
         do {
             switch (scelta = menu(bf)) {
                 case 2:
@@ -56,6 +56,20 @@ public class Main {
                 case 4:
                     adventureTime.visualizzaElencoAttivita();
                     break;
+                case 6:
+                    adventureTime.visualizzaElencoAttivita();
+                    System.out.println("Id attività: ");
+                    attivitaId = readLineSafe(bf);
+                    adventureTime.visualizzaSessioniAttivita(attivitaId);
+                    String decisione;
+                    do {
+                        System.out.println("Id sessione: ");
+                        String sessioneId = readLineSafe(bf);
+                        adventureTime.eliminaSessione(sessioneId);
+                        System.out.println("Vuoi eliminare altre sessioni? s/n ");
+                        decisione = readLineSafe(bf);
+                    } while (decisione.contentEquals("s"));
+                    break;
                 case 7:
                     System.out.print("Nome guida: ");
                     nome = readLineSafe(bf);
@@ -69,7 +83,7 @@ public class Main {
                     adventureTime.visualizzaElencoAttivita();
                     if (!adventureTime.getElencoAttivita().isEmpty()) {
                         System.out.print("Id attività: ");
-                        String attivitaId = readLineSafe(bf);
+                        attivitaId = readLineSafe(bf);
                         Map<String, SessioneAttivita> sessioniSenzaGuida = adventureTime.mostraSessioniSenzaGuida(attivitaId);
                         System.out.print("Id sessione: ");
                         String sessioneId = readLineSafe(bf);
@@ -96,6 +110,7 @@ public class Main {
             System.out.println("\nMENU:");
             System.out.println("2. Inserisci Nuova Attività");
             System.out.println("4. Visualizza Elenco Attività");
+            System.out.println("6. Elimina Sessione Attività");
             System.out.println("7. Registra Nuova Guida");
             System.out.println("9. Assegna Guida");
             System.out.println("0. Esci");

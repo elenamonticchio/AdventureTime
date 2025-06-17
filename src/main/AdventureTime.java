@@ -125,4 +125,22 @@ public class AdventureTime {
         guida.assegnaGuida(sessione);
         sessione.setGuida(guida);
     }
+
+    public void visualizzaSessioniAttivita(String attivitaId) {
+        this.attivitaCorrente = elencoAttivita.get(attivitaId);
+        Map<String, SessioneAttivita> elencoSessioni = this.attivitaCorrente.getElencoSessioni();
+        if (elencoSessioni.isEmpty()) {
+            System.out.println("Nessuna sessione disponibile per l'attività: " + this.attivitaCorrente.getNome());
+            return;
+        }
+        for (Map.Entry<String, SessioneAttivita> entry : elencoSessioni.entrySet()) {
+            SessioneAttivita sessione = entry.getValue();
+            System.out.println(sessione);
+        }
+    }
+
+    public void eliminaSessione(String sessioneId) {
+        System.out.println("Ciao fra");
+        this.attivitaCorrente.eliminaSessione(sessioneId);
+    }
 }
