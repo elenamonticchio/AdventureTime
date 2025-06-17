@@ -15,6 +15,7 @@ public class TipoAttivita {
     private String id;
     private int contatoreSessioni = 0;
 
+
     public TipoAttivita(String id, String nome, String descrizione, float prezzo, DifficoltaEnum difficolta) {
         this.nome = nome;
         this.descrizione = descrizione;

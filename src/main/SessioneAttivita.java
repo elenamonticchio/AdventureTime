@@ -54,5 +54,9 @@ public class SessioneAttivita {
     public String toString() {
         return "id='" + id + '\'' + ", dataOra=" + dataOra + ", capienzaMassima=" + capienzaMassima + ", durata=" + durata;
     }
+
+    public int getCapienzaMassima() {
+        return capienzaMassima;
+    }
 }
 
