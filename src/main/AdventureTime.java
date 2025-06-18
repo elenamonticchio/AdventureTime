@@ -37,6 +37,10 @@ public class AdventureTime {
         return Collections.unmodifiableMap(elencoGuide);
     }
 
+    public TipoAttivita getAttivitaCorrente() {
+        return attivitaCorrente;
+    }
+
     public void inserisciNuovaAttivita(String nome, String descrizione, float prezzo, DifficoltaEnum difficolta) {
         String id = "A" + contatoreAttivita;
         this.attivitaCorrente = new TipoAttivita(id, nome, descrizione, prezzo, difficolta);
@@ -140,7 +144,10 @@ public class AdventureTime {
     }
 
     public void eliminaSessione(String sessioneId) {
-        System.out.println("Ciao fra");
         this.attivitaCorrente.eliminaSessione(sessioneId);
+    }
+
+    public void selezionaAttivita(String attivitaId) {
+        this.attivitaCorrente = elencoAttivita.get(attivitaId);
     }
 }

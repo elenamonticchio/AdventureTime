@@ -60,14 +60,11 @@ class GuidaTest {
         Guida guida = new Guida("G1", "Anna", "A123", "Storia");
         SessioneAttivita sessione = new SessioneAttivita("S1", LocalDateTime.of(2025, 6, 19, 9, 0), 15, Duration.ofHours(1));
 
-        // Assegna la sessione
         guida.assegnaGuida(sessione);
         assertTrue(guida.getSessioniAssegnate().containsKey("S1"), "La sessione dovrebbe essere assegnata");
 
-        // Rimuovi la sessione
         guida.rimuoviSessione("S1");
 
-        // Verifica che la sessione non sia più presente
         assertFalse(guida.getSessioniAssegnate().containsKey("S1"), "La sessione dovrebbe essere rimossa");
     }
 }

@@ -94,19 +94,15 @@ public class TipoAttivitaTest {
         AdventureTime adventureTime = AdventureTime.getInstance();
         tipoAttivita.inserisciSessioneAttivita(LocalDateTime.now(), 10, Duration.ofHours(2));
 
-        // Recupero la sessione
         SessioneAttivita sessione = tipoAttivita.getElencoSessioni().values().iterator().next();
         String sessioneId = sessione.getId();
 
-        // Assegno la guida
         Guida guida = new Guida("G1", "Marco", "Rossi", "Trekking");
         guida.assegnaGuida(sessione);
         sessione.setGuida(guida);
 
-        // Elimino la sessione
         tipoAttivita.eliminaSessione(sessioneId);
 
-        // Verifiche
         assertFalse(tipoAttivita.getElencoSessioni().containsKey(sessioneId));
         assertFalse(guida.getSessioniAssegnate().containsKey(sessioneId));
     }

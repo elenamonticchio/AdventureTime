@@ -16,6 +16,8 @@ public class Main {
         int scelta;
         String nome;
         String attivitaId;
+        String condizione;
+
         do {
             switch (scelta = menu(bf)) {
                 case 2:
@@ -27,27 +29,23 @@ public class Main {
                     float prezzo = Float.parseFloat(readLineSafe(bf));
                     System.out.print("Difficoltà (FACILE, MEDIA, DIFFICILE): ");
                     DifficoltaEnum diff = DifficoltaEnum.valueOf(readLineSafe(bf).toUpperCase());
-
                     adventureTime.inserisciNuovaAttivita(nome, descrizione, prezzo, diff);
 
-                    System.out.print("Vuoi inserire delle sessioni? s/n ");
-                    String condizione = readLineSafe(bf);
-
+                    System.out.print("Vuoi inserire delle sessioni? s/n: ");
+                    condizione = readLineSafe(bf);
                     while (Objects.equals(condizione, "s")) {
                         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-                        System.out.println("Data e ora sessione (formato: GG/MM/AAAA HH:MM)");
-                        System.out.println("Esempio: 31/12/2023 15:30");
+                        System.out.print("Data e ora sessione (formato: GG/MM/AAAA HH:MM es. 31/12/2023 15:30): ");
                         String input = readLineSafe(bf);
                         LocalDateTime dataOra = LocalDateTime.parse(input, formatter);
                         System.out.print("Capienza massima: ");
                         int capienzaMassima = Integer.parseInt(readLineSafe(bf));
-                        System.out.print("Durata in ore:");
+                        System.out.print("Durata in ore: ");
                         int ore = Integer.parseInt(readLineSafe(bf));
                         Duration durata = Duration.ofHours(ore);
-
                         adventureTime.inserisciSessioneAttivita(dataOra, capienzaMassima, durata);
 
-                        System.out.print("Vuoi inserire altre sessioni? s/n ");
+                        System.out.print("Vuoi inserire altre sessioni? s/n: ");
                         condizione = readLineSafe(bf);
                     }
 
@@ -58,17 +56,21 @@ public class Main {
                     break;
                 case 6:
                     adventureTime.visualizzaElencoAttivita();
-                    System.out.println("Id attività: ");
-                    attivitaId = readLineSafe(bf);
-                    adventureTime.visualizzaSessioniAttivita(attivitaId);
-                    String decisione;
-                    do {
-                        System.out.println("Id sessione: ");
-                        String sessioneId = readLineSafe(bf);
-                        adventureTime.eliminaSessione(sessioneId);
-                        System.out.println("Vuoi eliminare altre sessioni? s/n ");
-                        decisione = readLineSafe(bf);
-                    } while (decisione.contentEquals("s"));
+
+                    if (!adventureTime.getElencoAttivita().isEmpty()) {
+                        System.out.print("Id attività: ");
+                        attivitaId = readLineSafe(bf);
+                        adventureTime.visualizzaSessioniAttivita(attivitaId);
+
+                        do {
+                            System.out.print("Id sessione: ");
+                            String sessioneId = readLineSafe(bf);
+                            adventureTime.eliminaSessione(sessioneId);
+
+                            System.out.print("Vuoi eliminare altre sessioni? s/n: ");
+                            condizione = readLineSafe(bf);
+                        } while (condizione.contentEquals("s"));
+                    }
                     break;
                 case 7:
                     System.out.print("Nome guida: ");
@@ -79,20 +81,49 @@ public class Main {
                     String specializzazione = readLineSafe(bf);
                     adventureTime.registraGuida(nome, codiceAttestato, specializzazione);
                     break;
+                case 8:
+                    adventureTime.visualizzaElencoAttivita();
+
+                    if (!adventureTime.getElencoAttivita().isEmpty()) {
+                        System.out.print("Id attività: ");
+                        attivitaId = readLineSafe(bf);
+                        adventureTime.selezionaAttivita(attivitaId);
+
+                        do {
+                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+                            System.out.print("Data e ora sessione (formato: GG/MM/AAAA HH:MM es. 31/12/2023 15:30): ");
+                            String input = readLineSafe(bf);
+                            LocalDateTime dataOra = LocalDateTime.parse(input, formatter);
+                            System.out.print("Capienza massima: ");
+                            int capienzaMassima = Integer.parseInt(readLineSafe(bf));
+                            System.out.print("Durata in ore: ");
+                            int ore = Integer.parseInt(readLineSafe(bf));
+                            Duration durata = Duration.ofHours(ore);
+                            adventureTime.inserisciSessioneAttivita(dataOra, capienzaMassima, durata);
+
+                            System.out.print("Vuoi inserire altre sessioni? s/n: ");
+                            condizione = readLineSafe(bf);
+                        } while (condizione.contentEquals("s"));
+
+                        adventureTime.confermaInserimento();
+                    }
+                    break;
                 case 9:
                     adventureTime.visualizzaElencoAttivita();
+
                     if (!adventureTime.getElencoAttivita().isEmpty()) {
                         System.out.print("Id attività: ");
                         attivitaId = readLineSafe(bf);
                         Map<String, SessioneAttivita> sessioniSenzaGuida = adventureTime.mostraSessioniSenzaGuida(attivitaId);
+
                         System.out.print("Id sessione: ");
                         String sessioneId = readLineSafe(bf);
                         SessioneAttivita sessione = sessioniSenzaGuida.get(sessioneId);
                         Map<String, Guida> guideDisponibili = adventureTime.mostraGuideDisponibili(sessione);
+
                         System.out.print("Id guida: ");
                         String guidaId = readLineSafe(bf);
                         adventureTime.assegnaGuida(sessione, guideDisponibili.get(guidaId));
-                        System.out.print("Operazione completata");
                     }
                     break;
                 case 0:
@@ -112,6 +143,7 @@ public class Main {
             System.out.println("4. Visualizza Elenco Attività");
             System.out.println("6. Elimina Sessione Attività");
             System.out.println("7. Registra Nuova Guida");
+            System.out.println("8. Inserisci Sessione Attività");
             System.out.println("9. Assegna Guida");
             System.out.println("0. Esci");
             System.out.print("Scelta: ");

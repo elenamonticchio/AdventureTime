@@ -17,7 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdventureTimeTest {
     private AdventureTime adventureTime;
 
-
     @BeforeEach
     void setUp() throws NoSuchFieldException, IllegalAccessException {
         Field instance = AdventureTime.class.getDeclaredField("adventureTime");
@@ -28,7 +27,6 @@ public class AdventureTimeTest {
         contatoreAttivita.setAccessible(true);
         contatoreAttivita.set(AdventureTime.getInstance(), 0);
     }
-
 
     @Test
     void testInserisciNuovaAttivita() {
@@ -54,15 +52,15 @@ public class AdventureTimeTest {
 
     @Test
     void testInserimentoMultiploAttivita() {
-        AdventureTime at = AdventureTime.getInstance();
+        AdventureTime adventureTime = AdventureTime.getInstance();
 
-        at.inserisciNuovaAttivita("Kayak sul Lago", "Giro in kayak sul lago", 30.0f, DifficoltaEnum.FACILE);
-        at.confermaInserimento(); // ID A0
+        adventureTime.inserisciNuovaAttivita("Kayak sul Lago", "Giro in kayak sul lago", 30.0f, DifficoltaEnum.FACILE);
+        adventureTime.confermaInserimento(); // ID A0
 
-        at.inserisciNuovaAttivita("Arrampicata Sportiva", "Sessione di arrampicata indoor", 70.0f, DifficoltaEnum.DIFFICILE);
-        at.confermaInserimento(); // ID A1
+        adventureTime.inserisciNuovaAttivita("Arrampicata Sportiva", "Sessione di arrampicata indoor", 70.0f, DifficoltaEnum.DIFFICILE);
+        adventureTime.confermaInserimento(); // ID A1
 
-        Map<String, TipoAttivita> elencoAttivita = at.getElencoAttivita();
+        Map<String, TipoAttivita> elencoAttivita = adventureTime.getElencoAttivita();
         assertEquals(2, elencoAttivita.size());
         assertNotNull(elencoAttivita.get("A0"));
         assertNotNull(elencoAttivita.get("A1"));
@@ -70,17 +68,17 @@ public class AdventureTimeTest {
 
     @Test
     void testInserisciSessioneAttivita() {
-        AdventureTime at = AdventureTime.getInstance();
-        at.inserisciNuovaAttivita("Canyoning", "Discesa nei canyon", 90.0f, DifficoltaEnum.MEDIA);
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        adventureTime.inserisciNuovaAttivita("Canyoning", "Discesa nei canyon", 90.0f, DifficoltaEnum.MEDIA);
 
         LocalDateTime dataOra = LocalDateTime.now();
         int capienzaMassima = 10;
         Duration durata = Duration.ofHours(4);
 
-        at.inserisciSessioneAttivita(dataOra, capienzaMassima, durata);
-        at.confermaInserimento();
+        adventureTime.inserisciSessioneAttivita(dataOra, capienzaMassima, durata);
+        adventureTime.confermaInserimento();
 
-        TipoAttivita attivita = at.getElencoAttivita().get("A0");
+        TipoAttivita attivita = adventureTime.getElencoAttivita().get("A0");
         assertNotNull(attivita);
         assertEquals(1, attivita.getElencoSessioni().size());
         assertTrue(attivita.getElencoSessioni().containsKey("A0S0"));
@@ -143,11 +141,11 @@ public class AdventureTimeTest {
 
     @Test
     public void testRegistraGuida() {
-        AdventureTime at = AdventureTime.getInstance();
+        AdventureTime adventureTime = AdventureTime.getInstance();
 
-        at.registraGuida("Mario Rossi", "AT123", "Escursionismo");
+        adventureTime.registraGuida("Mario Rossi", "AT123", "Escursionismo");
 
-        Map<String, Guida> guide = at.getElencoGuide();
+        Map<String, Guida> guide = adventureTime.getElencoGuide();
         assertEquals(1, guide.size());
 
         Guida g = guide.get("G0");
@@ -159,12 +157,12 @@ public class AdventureTimeTest {
 
     @Test
     public void testRegistraMultipleGuide() {
-        AdventureTime at = AdventureTime.getInstance();
+        AdventureTime adventureTime = AdventureTime.getInstance();
 
-        at.registraGuida("Mario Rossi", "AT123", "Escursionismo");
-        at.registraGuida("Luca Bianchi", "AT456", "Arrampicata");
+        adventureTime.registraGuida("Mario Rossi", "AT123", "Escursionismo");
+        adventureTime.registraGuida("Luca Bianchi", "AT456", "Arrampicata");
 
-        Map<String, Guida> guide = at.getElencoGuide();
+        Map<String, Guida> guide = adventureTime.getElencoGuide();
         assertEquals(2, guide.size());
 
         assertTrue(guide.containsKey("G0"));
@@ -173,16 +171,16 @@ public class AdventureTimeTest {
 
     @Test
     public void testMostraSessioniSenzaGuida() {
-        AdventureTime at = AdventureTime.getInstance();
+        AdventureTime adventureTime = AdventureTime.getInstance();
 
-        at.inserisciNuovaAttivita("Arrampicata", "Parete di roccia", 50.0f, DifficoltaEnum.MEDIA);
+        adventureTime.inserisciNuovaAttivita("Arrampicata", "Parete di roccia", 50.0f, DifficoltaEnum.MEDIA);
         LocalDateTime ora = LocalDateTime.now().plusDays(1);
         Duration durata = Duration.ofHours(2);
-        at.inserisciSessioneAttivita(ora, 10, durata);
-        at.confermaInserimento();
+        adventureTime.inserisciSessioneAttivita(ora, 10, durata);
+        adventureTime.confermaInserimento();
 
         String attivitaId = "A0";
-        Map<String, SessioneAttivita> sessioniSenzaGuida = at.mostraSessioniSenzaGuida(attivitaId);
+        Map<String, SessioneAttivita> sessioniSenzaGuida = adventureTime.mostraSessioniSenzaGuida(attivitaId);
         assertEquals(1, sessioniSenzaGuida.size());
         SessioneAttivita sessione = sessioniSenzaGuida.values().iterator().next();
         assertNull(sessione.getGuida());
@@ -190,62 +188,62 @@ public class AdventureTimeTest {
 
     @Test
     public void testMostraGuideDisponibili() {
-        AdventureTime at = AdventureTime.getInstance();
+        AdventureTime adventureTime = AdventureTime.getInstance();
 
-        at.inserisciNuovaAttivita("Canoa", "Discesa fluviale", 40.0f, DifficoltaEnum.FACILE);
+        adventureTime.inserisciNuovaAttivita("Canoa", "Discesa fluviale", 40.0f, DifficoltaEnum.FACILE);
         LocalDateTime ora = LocalDateTime.now().plusDays(2);
         Duration durata = Duration.ofHours(3);
-        at.inserisciSessioneAttivita(ora, 8, durata);
-        at.confermaInserimento();
+        adventureTime.inserisciSessioneAttivita(ora, 8, durata);
+        adventureTime.confermaInserimento();
 
-        at.registraGuida("Anna Rossi", "1234", "Canoa");
+        adventureTime.registraGuida("Anna Rossi", "1234", "Canoa");
         String attivitaId = "A0";
-        SessioneAttivita sessione = at.mostraSessioniSenzaGuida(attivitaId)
+        SessioneAttivita sessione = adventureTime.mostraSessioniSenzaGuida(attivitaId)
                 .values().iterator().next();
 
-        Map<String, Guida> guideDisponibili = at.mostraGuideDisponibili(sessione);
+        Map<String, Guida> guideDisponibili = adventureTime.mostraGuideDisponibili(sessione);
         assertEquals(1, guideDisponibili.size());
         assertTrue(guideDisponibili.values().stream().anyMatch(g -> g.getNome().equals("Anna Rossi")));
     }
 
     @Test
     void testMostraGuideDisponibili_guidaNonSpecializzata() {
-        AdventureTime at = AdventureTime.getInstance();
+        AdventureTime adventureTime = AdventureTime.getInstance();
 
-        at.inserisciNuovaAttivita("Escursionismo", "Camminata in montagna", 30.0f, DifficoltaEnum.MEDIA);
+        adventureTime.inserisciNuovaAttivita("Escursionismo", "Camminata in montagna", 30.0f, DifficoltaEnum.MEDIA);
         LocalDateTime inizio = LocalDateTime.of(2025, 6, 20, 9, 0);
         Duration durata = Duration.ofHours(2);
-        at.inserisciSessioneAttivita(inizio, 15, durata);
-        at.confermaInserimento();
+        adventureTime.inserisciSessioneAttivita(inizio, 15, durata);
+        adventureTime.confermaInserimento();
 
         String attivitaId = "A0";
-        SessioneAttivita sessione = at.getElencoAttivita().get(attivitaId).getElencoSessioni().get("A0S0");
+        SessioneAttivita sessione = adventureTime.getElencoAttivita().get(attivitaId).getElencoSessioni().get("A0S0");
 
-        at.registraGuida("Luca", "AT123", "Kayak");
+        adventureTime.registraGuida("Luca", "AT123", "Kayak");
 
-        Map<String, Guida> disponibili = at.mostraGuideDisponibili(sessione);
+        Map<String, Guida> disponibili = adventureTime.mostraGuideDisponibili(sessione);
 
         assertTrue(disponibili.isEmpty());
     }
 
     @Test
     public void testAssegnaGuida() {
-        AdventureTime at = AdventureTime.getInstance();
+        AdventureTime adventureTime = AdventureTime.getInstance();
 
-        at.inserisciNuovaAttivita("Trekking", "Sentieri montani", 60.0f, DifficoltaEnum.DIFFICILE);
+        adventureTime.inserisciNuovaAttivita("Trekking", "Sentieri montani", 60.0f, DifficoltaEnum.DIFFICILE);
         LocalDateTime ora = LocalDateTime.now().plusDays(3);
         Duration durata = Duration.ofHours(4);
-        at.inserisciSessioneAttivita(ora, 12, durata);
-        at.confermaInserimento();
+        adventureTime.inserisciSessioneAttivita(ora, 12, durata);
+        adventureTime.confermaInserimento();
 
-        at.registraGuida("Luca Bianchi", "5678", "Trekking");
+        adventureTime.registraGuida("Luca Bianchi", "5678", "Trekking");
 
-        SessioneAttivita sessione = at.mostraSessioniSenzaGuida("A0")
+        SessioneAttivita sessione = adventureTime.mostraSessioniSenzaGuida("A0")
                 .values().iterator().next();
-        Guida guida = at.mostraGuideDisponibili(sessione)
+        Guida guida = adventureTime.mostraGuideDisponibili(sessione)
                 .values().iterator().next();
 
-        at.assegnaGuida(sessione, guida);
+        adventureTime.assegnaGuida(sessione, guida);
 
         assertEquals(guida, sessione.getGuida());
         assertTrue(guida.getSessioniAssegnate().containsValue(sessione));
@@ -298,15 +296,26 @@ public class AdventureTimeTest {
         adventureTime.confermaInserimento();
 
         String attivitaId = adventureTime.getElencoAttivita().keySet().iterator().next();
-        adventureTime.visualizzaSessioniAttivita(attivitaId); // setta attivitaCorrente
+        adventureTime.visualizzaSessioniAttivita(attivitaId);
 
         TipoAttivita attivita = adventureTime.getElencoAttivita().get(attivitaId);
         String sessioneId = attivita.getElencoSessioni().keySet().iterator().next();
 
-        adventureTime.eliminaSessione(sessioneId); // stampa corretta attesa
+        adventureTime.eliminaSessione(sessioneId);
 
         Assertions.assertFalse(attivita.getElencoSessioni().containsKey(sessioneId));
     }
 
+    @Test
+    public void testSelezionaAttivita() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        adventureTime.inserisciNuovaAttivita("Trekking", "Escursione in montagna", 30.0f, DifficoltaEnum.MEDIA);
+        adventureTime.confermaInserimento();
 
+        String attivitaId = adventureTime.getElencoAttivita().keySet().iterator().next();
+
+        adventureTime.selezionaAttivita(attivitaId);
+
+        assertEquals(attivitaId, adventureTime.getAttivitaCorrente().getId());
+    }
 }

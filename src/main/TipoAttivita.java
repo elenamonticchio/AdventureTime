@@ -69,11 +69,6 @@ public class TipoAttivita {
         return sessioniSenzaGuida;
     }
 
-    @Override
-    public String toString() {
-        return "ID: " + id + ", Nome: " + nome + ", Descrizione: " + descrizione + ", Prezzo: " + String.format("%.2f", prezzo) + "€, Difficoltà: " + difficolta;
-    }
-
     public void eliminaSessione(String sessioneId) {
         SessioneAttivita sessione = elencoSessioni.get(sessioneId);
         Guida guida = sessione.getGuida();
@@ -82,5 +77,10 @@ public class TipoAttivita {
         }
         this.elencoSessioni.remove(sessioneId);
         System.out.println("Sessione rimossa correttamente");
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + ", Nome: " + nome + ", Descrizione: " + descrizione + ", Prezzo: " + String.format("%.2f", prezzo) + "€, Difficoltà: " + difficolta;
     }
 }
