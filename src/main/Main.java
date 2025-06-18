@@ -51,6 +51,9 @@ public class Main {
 
                     adventureTime.confermaInserimento();
                     break;
+                case 3:
+                    adventureTime.monitoraCapacita();
+                    break;
                 case 4:
                     adventureTime.visualizzaElencoAttivita();
                     break;
@@ -140,6 +143,7 @@ public class Main {
         try {
             System.out.println("\nMENU:");
             System.out.println("2. Inserisci Nuova Attività");
+            System.out.println("3. Monitora Capacità Parco");
             System.out.println("4. Visualizza Elenco Attività");
             System.out.println("6. Elimina Sessione Attività");
             System.out.println("7. Registra Nuova Guida");

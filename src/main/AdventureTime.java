@@ -10,11 +10,17 @@ public class AdventureTime {
     private static AdventureTime adventureTime;
     private final Map<String, TipoAttivita> elencoAttivita;
     private final Map<String, Guida> elencoGuide;
-    private int contatoreAttivita = 0;
-    private int contatoreGuide = 0;
+    private int contatoreAttivita;
+    private int contatoreGuide;
     private TipoAttivita attivitaCorrente;
+    private int capienzaMassima;
+    private int visitatoriAttuali;
 
     public AdventureTime() {
+        this.contatoreAttivita = 0;
+        this.contatoreGuide = 0;
+        this.capienzaMassima = 320;
+        this.visitatoriAttuali = 0;
         this.elencoAttivita = new HashMap<>();
         this.elencoGuide = new HashMap<>();
     }
@@ -149,5 +155,24 @@ public class AdventureTime {
 
     public void selezionaAttivita(String attivitaId) {
         this.attivitaCorrente = elencoAttivita.get(attivitaId);
+    }
+
+    public void monitoraCapacita() {
+        System.out.println("Capacità massima: " + capienzaMassima + " visitatori");
+        System.out.println("Visitatori attuali: " + visitatoriAttuali);
+
+        double percentualeOccupazione = (double) visitatoriAttuali / capienzaMassima * 100;
+        System.out.printf("Occupazione: %.2f%%\n", percentualeOccupazione);
+
+        int rimanenti = capienzaMassima - visitatoriAttuali;
+        System.out.println("Posti disponibili: " + rimanenti);
+
+        if (percentualeOccupazione < 60) {
+            System.out.println("Stato: Libero");
+        } else if (percentualeOccupazione < 90) {
+            System.out.println("Stato: Affollato");
+        } else {
+            System.out.println("Stato: Quasi pieno o pieno");
+        }
     }
 }
