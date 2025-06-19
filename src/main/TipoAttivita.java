@@ -71,12 +71,16 @@ public class TipoAttivita {
 
     public void eliminaSessione(String sessioneId) {
         SessioneAttivita sessione = elencoSessioni.get(sessioneId);
-        Guida guida = sessione.getGuida();
-        if (guida != null) {
-            guida.rimuoviSessione(sessioneId);
+        if (sessione.getPrenotazioniAttuali() == 0) {
+            Guida guida = sessione.getGuida();
+            if (guida != null) {
+                guida.rimuoviSessione(sessioneId);
+            }
+            this.elencoSessioni.remove(sessioneId);
+            System.out.println("Sessione rimossa correttamente");
+        } else {
+            System.out.println("Impossibile rimuovere la sessione: prenotazioni attive");
         }
-        this.elencoSessioni.remove(sessioneId);
-        System.out.println("Sessione rimossa correttamente");
     }
 
     @Override

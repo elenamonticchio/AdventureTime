@@ -9,12 +9,19 @@ public class SessioneAttivita {
     private int capienzaMassima;
     private Duration durata;
     private Guida guida;
+    private int prenotazioniAttuali;
 
     public SessioneAttivita(String id, LocalDateTime dataOra, int capienzaMassima, Duration durata) {
         this.id = id;
         this.dataOra = dataOra;
         this.capienzaMassima = capienzaMassima;
         this.durata = durata;
+        this.prenotazioniAttuali = 0;
+    }
+
+
+    public int getPrenotazioniAttuali() {
+        return prenotazioniAttuali;
     }
 
     public LocalDateTime getDataOra() {
