@@ -41,6 +41,10 @@ public class AdventureTime {
         return adventureTime;
     }
 
+    public int getVisitatoriAttuali() {
+        return visitatoriAttuali;
+    }
+
     public Map<String, TipoAttivita> getElencoAttivita() {
         return Collections.unmodifiableMap(elencoAttivita);
     }
@@ -215,11 +219,16 @@ public class AdventureTime {
     }
 
     public void acquistaBigliettoIngresso(boolean isRidotto) {
-        String id = "B" + contatoreBiglietti;
-        BigliettoFactory factory = new BigliettoIngressoFactory(id, prezzoIngresso, isRidotto);
-        Biglietto biglietto = factory.creaBiglietto();
-        elencoBiglietti.put(biglietto.getId(), biglietto);
-        System.out.println(biglietto);
-        this.contatoreBiglietti++;
+        if (this.visitatoriAttuali < this.capienzaMassima) {
+            String id = "B" + contatoreBiglietti;
+            BigliettoFactory factory = new BigliettoIngressoFactory(id, prezzoIngresso, isRidotto);
+            Biglietto biglietto = factory.creaBiglietto();
+            elencoBiglietti.put(biglietto.getId(), biglietto);
+            System.out.println(biglietto);
+            this.contatoreBiglietti++;
+            this.visitatoriAttuali++;
+        } else {
+            System.out.println("Capienza massima raggiunta!");
+        }
     }
 }

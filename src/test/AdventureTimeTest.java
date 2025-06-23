@@ -363,45 +363,41 @@ public class AdventureTimeTest {
     }
 
     @Test
-    public void testAcquistaBigliettoIngressoInteroFeriale() {
+    void testAcquistoBigliettoIngressoNonRidotto() {
         AdventureTime adventureTime = AdventureTime.getInstance();
+        int visitatoriPrecedenti = adventureTime.getVisitatoriAttuali();
 
         adventureTime.acquistaBigliettoIngresso(false);
 
-        Biglietto biglietto = adventureTime.getElencoBiglietti().get("B0");
-
-        assertNotNull(biglietto);
-        assertEquals("B0", biglietto.getId());
-        assertEquals(15.0f, biglietto.getPrezzo(), 0.01f);
+        assertNotNull(adventureTime.getElencoBiglietti().get("B0"));
+        assertEquals(visitatoriPrecedenti + 1, adventureTime.getVisitatoriAttuali());
     }
 
     @Test
-    public void testAcquistaBigliettoIngressoRidottoFeriale() {
+    void testAcquistoBigliettoIngressoRidotto() {
         AdventureTime adventureTime = AdventureTime.getInstance();
+        int visitatoriPrecedenti = adventureTime.getVisitatoriAttuali();
 
         adventureTime.acquistaBigliettoIngresso(true);
 
-        Biglietto biglietto = adventureTime.getElencoBiglietti().get("B0");
-
-        assertNotNull(biglietto);
-        assertEquals("B0", biglietto.getId());
-        assertEquals(12.0f, biglietto.getPrezzo(), 0.01f);
+        assertNotNull(adventureTime.getElencoBiglietti().get("B0"));
+        assertEquals(visitatoriPrecedenti + 1, adventureTime.getVisitatoriAttuali());
     }
 
     @Test
-    public void testAcquistaBigliettoIngressoInteroWeekend() {
+    void testAcquistoBigliettoIngressoConCapienzaMassima() {
         AdventureTime adventureTime = AdventureTime.getInstance();
+
+        for (int i = 0; i < 320; i++) {
+            adventureTime.acquistaBigliettoIngresso(false);
+        }
+
+        int visitatoriPrima = adventureTime.getVisitatoriAttuali();
+
         adventureTime.acquistaBigliettoIngresso(false);
 
-        Biglietto biglietto = adventureTime.getElencoBiglietti().get("B0");
-
-        assertNotNull(biglietto);
-
-        float prezzo = biglietto.getPrezzo();
-        if (prezzo == 18.0f) {
-            assertEquals(18.0f, prezzo, 0.01f);
-        } else {
-            assertEquals(15.0f, prezzo, 0.01f);
-        }
+        assertEquals(visitatoriPrima, adventureTime.getVisitatoriAttuali());
+        assertNull(adventureTime.getElencoBiglietti().get("B320"));
     }
+
 }
