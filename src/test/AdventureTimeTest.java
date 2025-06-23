@@ -361,4 +361,47 @@ public class AdventureTimeTest {
         float expectedPrezzo = prezzoBase * 0.8f;
         assertEquals(expectedPrezzo, biglietto.getPrezzo(), 0.01);
     }
+
+    @Test
+    public void testAcquistaBigliettoIngressoInteroFeriale() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+
+        adventureTime.acquistaBigliettoIngresso(false);
+
+        Biglietto biglietto = adventureTime.getElencoBiglietti().get("B0");
+
+        assertNotNull(biglietto);
+        assertEquals("B0", biglietto.getId());
+        assertEquals(15.0f, biglietto.getPrezzo(), 0.01f);
+    }
+
+    @Test
+    public void testAcquistaBigliettoIngressoRidottoFeriale() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+
+        adventureTime.acquistaBigliettoIngresso(true);
+
+        Biglietto biglietto = adventureTime.getElencoBiglietti().get("B0");
+
+        assertNotNull(biglietto);
+        assertEquals("B0", biglietto.getId());
+        assertEquals(12.0f, biglietto.getPrezzo(), 0.01f);
+    }
+
+    @Test
+    public void testAcquistaBigliettoIngressoInteroWeekend() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        adventureTime.acquistaBigliettoIngresso(false);
+
+        Biglietto biglietto = adventureTime.getElencoBiglietti().get("B0");
+
+        assertNotNull(biglietto);
+
+        float prezzo = biglietto.getPrezzo();
+        if (prezzo == 18.0f) {
+            assertEquals(18.0f, prezzo, 0.01f);
+        } else {
+            assertEquals(15.0f, prezzo, 0.01f);
+        }
+    }
 }

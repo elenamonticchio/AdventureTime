@@ -71,6 +71,12 @@ public class Main {
                 case 4:
                     adventureTime.visualizzaElencoAttivita();
                     break;
+                case 5:
+                    System.out.print("Età inferiora a 12 anni o superiore a 65 anni? s/n: ");
+                    String eta = readLineSafe(bf);
+                    boolean isRidotto = eta.equalsIgnoreCase("s");
+                    adventureTime.acquistaBigliettoIngresso(isRidotto);
+                    break;
                 case 6:
                     adventureTime.visualizzaElencoAttivita();
 
@@ -160,6 +166,7 @@ public class Main {
             System.out.println("2. Inserisci Nuova Attività");
             System.out.println("3. Monitora Capacità Parco");
             System.out.println("4. Visualizza Elenco Attività");
+            System.out.println("5. Acquista Biglietto Ingresso");
             System.out.println("6. Elimina Sessione Attività");
             System.out.println("7. Registra Nuova Guida");
             System.out.println("8. Inserisci Sessione Attività");

@@ -17,6 +17,7 @@ public class AdventureTime {
     private TipoAttivita attivitaCorrente;
     private int capienzaMassima;
     private int visitatoriAttuali;
+    private int prezzoIngresso;
 
     public AdventureTime() {
         this.contatoreAttivita = 0;
@@ -24,6 +25,7 @@ public class AdventureTime {
         this.contatoreBiglietti = 0;
         this.capienzaMassima = 320;
         this.visitatoriAttuali = 0;
+        this.prezzoIngresso = 15;
         this.elencoAttivita = new HashMap<>();
         this.elencoGuide = new HashMap<>();
         this.elencoBiglietti = new HashMap<>();
@@ -206,6 +208,15 @@ public class AdventureTime {
         sessione.incrementaPartecipanti();
         String id = "B" + contatoreBiglietti;
         BigliettoFactory factory = new BigliettoSessioneFactory(id, prezzoBase, sessione, isRidotto);
+        Biglietto biglietto = factory.creaBiglietto();
+        elencoBiglietti.put(biglietto.getId(), biglietto);
+        System.out.println(biglietto);
+        this.contatoreBiglietti++;
+    }
+
+    public void acquistaBigliettoIngresso(boolean isRidotto) {
+        String id = "B" + contatoreBiglietti;
+        BigliettoFactory factory = new BigliettoIngressoFactory(id, prezzoIngresso, isRidotto);
         Biglietto biglietto = factory.creaBiglietto();
         elencoBiglietti.put(biglietto.getId(), biglietto);
         System.out.println(biglietto);
