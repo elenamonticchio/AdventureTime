@@ -62,6 +62,5 @@ public class Guida {
     public String toString() {
         return "id='" + id + '\'' + ", nome='" + nome + '\'' + ", codiceAttestato='" + codiceAttestato + '\'' + ", specializzazione='" + specializzazione + '\'';
     }
-
 }
 

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class TipoAttivita {
     private final String nome;
@@ -71,7 +72,7 @@ public class TipoAttivita {
 
     public void eliminaSessione(String sessioneId) {
         SessioneAttivita sessione = elencoSessioni.get(sessioneId);
-        if (sessione.getPrenotazioniAttuali() == 0) {
+        if (sessione.getPartecipantiAttuali() == 0) {
             Guida guida = sessione.getGuida();
             if (guida != null) {
                 guida.rimuoviSessione(sessioneId);
@@ -79,8 +80,33 @@ public class TipoAttivita {
             this.elencoSessioni.remove(sessioneId);
             System.out.println("Sessione rimossa correttamente");
         } else {
-            System.out.println("Impossibile rimuovere la sessione: prenotazioni attive");
+            System.out.println("Impossibile rimuovere la sessione: sono presenti prenotazioni");
         }
+    }
+
+    public boolean equalsNome(String nomeAttivita) {
+        return Objects.equals(nome, nomeAttivita);
+    }
+
+    public Map<String, SessioneAttivita> ottieniSessioniDisponibili() {
+        Map<String, SessioneAttivita> sessioniDisponibili = new HashMap<>();
+
+        for (Map.Entry<String, SessioneAttivita> entry : elencoSessioni.entrySet()) {
+            SessioneAttivita sessione = entry.getValue();
+            if (sessione.isDisponibile()) {
+                sessioniDisponibili.put(sessione.getId(), sessione);
+            }
+        }
+
+        if (sessioniDisponibili.isEmpty()) {
+            System.out.println("Nessuna sessione disponibile");
+        }
+
+        return sessioniDisponibili;
+    }
+
+    public SessioneAttivita getSessione(String sessioneId) {
+        return elencoSessioni.get(sessioneId);
     }
 
     @Override

@@ -9,19 +9,18 @@ public class SessioneAttivita {
     private int capienzaMassima;
     private Duration durata;
     private Guida guida;
-    private int prenotazioniAttuali;
+    private int partecipantiAttuali;
 
     public SessioneAttivita(String id, LocalDateTime dataOra, int capienzaMassima, Duration durata) {
         this.id = id;
         this.dataOra = dataOra;
         this.capienzaMassima = capienzaMassima;
         this.durata = durata;
-        this.prenotazioniAttuali = 0;
+        this.partecipantiAttuali = 0;
     }
 
-
-    public int getPrenotazioniAttuali() {
-        return prenotazioniAttuali;
+    public int getPartecipantiAttuali() {
+        return partecipantiAttuali;
     }
 
     public LocalDateTime getDataOra() {
@@ -59,6 +58,14 @@ public class SessioneAttivita {
         boolean startsBeforeOrEqualsThisEnd = dataOra.isBefore(thisFineSessione) || dataOra.isEqual(thisFineSessione);
         boolean endsAfterOrEqualsThisStart = fineSessione.isAfter(this.dataOra) || fineSessione.isEqual(this.dataOra);
         return startsBeforeOrEqualsThisEnd && endsAfterOrEqualsThisStart;
+    }
+
+    public boolean isDisponibile() {
+        return capienzaMassima > partecipantiAttuali;
+    }
+
+    public void incrementaPartecipanti() {
+        this.partecipantiAttuali++;
     }
 
     @Override

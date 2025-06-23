@@ -10,8 +10,10 @@ public class AdventureTime {
     private static AdventureTime adventureTime;
     private final Map<String, TipoAttivita> elencoAttivita;
     private final Map<String, Guida> elencoGuide;
+    private final Map<String, Biglietto> elencoBiglietti;
     private int contatoreAttivita;
     private int contatoreGuide;
+    private int contatoreBiglietti;
     private TipoAttivita attivitaCorrente;
     private int capienzaMassima;
     private int visitatoriAttuali;
@@ -19,10 +21,12 @@ public class AdventureTime {
     public AdventureTime() {
         this.contatoreAttivita = 0;
         this.contatoreGuide = 0;
+        this.contatoreBiglietti = 0;
         this.capienzaMassima = 320;
         this.visitatoriAttuali = 0;
         this.elencoAttivita = new HashMap<>();
         this.elencoGuide = new HashMap<>();
+        this.elencoBiglietti = new HashMap<>();
     }
 
     public static AdventureTime getInstance() {
@@ -45,6 +49,10 @@ public class AdventureTime {
 
     public TipoAttivita getAttivitaCorrente() {
         return attivitaCorrente;
+    }
+
+    public Map<String, Biglietto> getElencoBiglietti() {
+        return elencoBiglietti;
     }
 
     public void inserisciNuovaAttivita(String nome, String descrizione, float prezzo, DifficoltaEnum difficolta) {
@@ -174,5 +182,33 @@ public class AdventureTime {
         } else {
             System.out.println("Stato: Quasi pieno o pieno");
         }
+    }
+
+    public void ottieniInfoAttivitaESessioni(String nomeAttivita) {
+        for (TipoAttivita attivita : elencoAttivita.values()) {
+            if (attivita.equalsNome(nomeAttivita)) {
+                this.attivitaCorrente = attivita;
+
+                Map<String, SessioneAttivita> sessioniDisponibili = attivita.ottieniSessioniDisponibili();
+
+                for (SessioneAttivita sessione : sessioniDisponibili.values()) {
+                    System.out.println(sessione);
+                }
+                return;
+            }
+        }
+        System.out.println("Attività non trovata");
+    }
+
+    public void acquistaBigliettoSessione(String sessioneId, boolean isRidotto) {
+        float prezzoBase = this.attivitaCorrente.getPrezzo();
+        SessioneAttivita sessione = this.attivitaCorrente.getSessione(sessioneId);
+        sessione.incrementaPartecipanti();
+        String id = "B" + contatoreBiglietti;
+        BigliettoFactory factory = new BigliettoSessioneFactory(id, prezzoBase, sessione, isRidotto);
+        Biglietto biglietto = factory.creaBiglietto();
+        elencoBiglietti.put(biglietto.getId(), biglietto);
+        System.out.println(biglietto);
+        this.contatoreBiglietti++;
     }
 }

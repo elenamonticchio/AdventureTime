@@ -318,4 +318,47 @@ public class AdventureTimeTest {
 
         assertEquals(attivitaId, adventureTime.getAttivitaCorrente().getId());
     }
+
+    @Test
+    void testAcquistaBigliettoSessione_SenzaSconto() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+
+        String nomeAttivita = "Rafting";
+        float prezzo = 30.0f;
+        adventureTime.inserisciNuovaAttivita(nomeAttivita, "Discesa in fiume", prezzo, DifficoltaEnum.FACILE);
+        adventureTime.inserisciSessioneAttivita(LocalDateTime.of(2025, 6, 27, 10, 0), 10, Duration.ofHours(2));
+        adventureTime.confermaInserimento();
+
+        String attivitaId = adventureTime.getAttivitaCorrente().getId();
+        SessioneAttivita sessione = adventureTime.getAttivitaCorrente().getElencoSessioni().values().iterator().next();
+        String sessioneId = sessione.getId();
+
+        adventureTime.acquistaBigliettoSessione(sessioneId, false);
+
+        assertEquals(1, sessione.getPartecipantiAttuali(), "Numero partecipanti deve essere 1");
+        Biglietto biglietto = adventureTime.getElencoBiglietti().get("B0");
+        assertNotNull(biglietto);
+        assertEquals(prezzo, biglietto.getPrezzo(), 0.01);
+    }
+
+    @Test
+    void testAcquistaBigliettoSessione_Ridotto() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+
+        float prezzoBase = 40.0f;
+        adventureTime.inserisciNuovaAttivita("Kayak", "Tour in acqua", prezzoBase, DifficoltaEnum.MEDIA);
+        adventureTime.inserisciSessioneAttivita(LocalDateTime.of(2025, 6, 28, 11, 0), 5, Duration.ofHours(1));
+        adventureTime.confermaInserimento();
+
+        SessioneAttivita sessione = adventureTime.getAttivitaCorrente().getElencoSessioni().values().iterator().next();
+        String sessioneId = sessione.getId();
+
+        adventureTime.acquistaBigliettoSessione(sessioneId, true);
+
+        assertEquals(1, sessione.getPartecipantiAttuali());
+        Biglietto biglietto = adventureTime.getElencoBiglietti().get("B0");
+        assertNotNull(biglietto);
+        float expectedPrezzo = prezzoBase * 0.8f;
+        assertEquals(expectedPrezzo, biglietto.getPrezzo(), 0.01);
+    }
 }

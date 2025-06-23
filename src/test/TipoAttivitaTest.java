@@ -106,4 +106,41 @@ public class TipoAttivitaTest {
         assertFalse(tipoAttivita.getElencoSessioni().containsKey(sessioneId));
         assertFalse(guida.getSessioniAssegnate().containsKey(sessioneId));
     }
+
+    @Test
+    void testGetSessione_TrovaSessioneInserita() {
+        LocalDateTime data = LocalDateTime.of(2025, 6, 30, 9, 0);
+        tipoAttivita.inserisciSessioneAttivita(data, 10, Duration.ofHours(2));
+        String sessioneId = "A0S0";
+
+        SessioneAttivita sessione = tipoAttivita.getSessione(sessioneId);
+
+        assertNotNull(sessione);
+        assertEquals(sessioneId, sessione.getId());
+    }
+
+    @Test
+    void testOttieniSessioniDisponibili() {
+        LocalDateTime ora = LocalDateTime.of(2025, 7, 1, 10, 0);
+        tipoAttivita.inserisciSessioneAttivita(ora, 2, Duration.ofHours(1));
+        SessioneAttivita sessione = tipoAttivita.getSessione("A0S0");
+
+        assertTrue(sessione.isDisponibile());
+
+        Map<String, SessioneAttivita> disponibili = tipoAttivita.ottieniSessioniDisponibili();
+
+        assertEquals(1, disponibili.size());
+        assertTrue(disponibili.containsKey("A0S0"));
+    }
+
+    @Test
+    void testOttieniSessioniDisponibili_SessionePiena() {
+        tipoAttivita.inserisciSessioneAttivita(LocalDateTime.now(), 1, Duration.ofHours(1));
+        SessioneAttivita sessione = tipoAttivita.getSessione("A0S0");
+        sessione.incrementaPartecipanti();
+
+        Map<String, SessioneAttivita> disponibili = tipoAttivita.ottieniSessioniDisponibili();
+
+        assertTrue(disponibili.isEmpty());
+    }
 }

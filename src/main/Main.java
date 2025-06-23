@@ -16,10 +16,24 @@ public class Main {
         int scelta;
         String nome;
         String attivitaId;
+        String sessioneId;
         String condizione;
 
         do {
             switch (scelta = menu(bf)) {
+                case 1:
+                    System.out.print("Nome attività: ");
+                    nome = readLineSafe(bf);
+                    adventureTime.ottieniInfoAttivitaESessioni(nome);
+                    if (!adventureTime.getAttivitaCorrente().ottieniSessioniDisponibili().isEmpty()) {
+                        System.out.print("Id sessione: ");
+                        sessioneId = readLineSafe(bf);
+                        System.out.print("Età inferiora a 12 anni o superiore a 65 anni? s/n: ");
+                        String eta = readLineSafe(bf);
+                        boolean isRidotto = eta.equalsIgnoreCase("s");
+                        adventureTime.acquistaBigliettoSessione(sessioneId, isRidotto);
+                    }
+                    break;
                 case 2:
                     System.out.print("Nome attività: ");
                     nome = readLineSafe(bf);
@@ -67,7 +81,7 @@ public class Main {
 
                         do {
                             System.out.print("Id sessione: ");
-                            String sessioneId = readLineSafe(bf);
+                            sessioneId = readLineSafe(bf);
                             adventureTime.eliminaSessione(sessioneId);
 
                             System.out.print("Vuoi eliminare altre sessioni? s/n: ");
@@ -120,7 +134,7 @@ public class Main {
                         Map<String, SessioneAttivita> sessioniSenzaGuida = adventureTime.mostraSessioniSenzaGuida(attivitaId);
 
                         System.out.print("Id sessione: ");
-                        String sessioneId = readLineSafe(bf);
+                        sessioneId = readLineSafe(bf);
                         SessioneAttivita sessione = sessioniSenzaGuida.get(sessioneId);
                         Map<String, Guida> guideDisponibili = adventureTime.mostraGuideDisponibili(sessione);
 
@@ -142,6 +156,7 @@ public class Main {
     public static int menu(BufferedReader bf) {
         try {
             System.out.println("\nMENU:");
+            System.out.println("1. Acquista Biglietto Sessione");
             System.out.println("2. Inserisci Nuova Attività");
             System.out.println("3. Monitora Capacità Parco");
             System.out.println("4. Visualizza Elenco Attività");
