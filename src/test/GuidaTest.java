@@ -38,7 +38,7 @@ class GuidaTest {
         SessioneAttivita sessione = new SessioneAttivita("S1", LocalDateTime.of(2025, 6, 18, 10, 0), 20, Duration.ofHours(2));
         guida.assegnaGuida(sessione);
 
-        LocalDateTime nuovaData = LocalDateTime.of(2025, 6, 18, 13, 0); // Dopo la fine
+        LocalDateTime nuovaData = LocalDateTime.of(2025, 6, 18, 13, 0);
         Duration nuovaDurata = Duration.ofHours(1);
 
         assertTrue(guida.isDisponibile(nuovaData, nuovaDurata), "La guida dovrebbe essere disponibile per sessione non sovrapposta");

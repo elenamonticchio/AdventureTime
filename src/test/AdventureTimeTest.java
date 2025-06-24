@@ -55,10 +55,10 @@ public class AdventureTimeTest {
         AdventureTime adventureTime = AdventureTime.getInstance();
 
         adventureTime.inserisciNuovaAttivita("Kayak sul Lago", "Giro in kayak sul lago", 30.0f, DifficoltaEnum.FACILE);
-        adventureTime.confermaInserimento(); // ID A0
+        adventureTime.confermaInserimento();
 
         adventureTime.inserisciNuovaAttivita("Arrampicata Sportiva", "Sessione di arrampicata indoor", 70.0f, DifficoltaEnum.DIFFICILE);
-        adventureTime.confermaInserimento(); // ID A1
+        adventureTime.confermaInserimento();
 
         Map<String, TipoAttivita> elencoAttivita = adventureTime.getElencoAttivita();
         assertEquals(2, elencoAttivita.size());

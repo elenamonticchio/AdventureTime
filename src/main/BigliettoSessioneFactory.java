@@ -4,7 +4,6 @@ public class BigliettoSessioneFactory extends BigliettoFactory {
     private final float prezzoFinale;
     private final SessioneAttivita sessione;
     private String id;
-    private boolean isRidotto;
 
     public BigliettoSessioneFactory(String id, float prezzoBase, SessioneAttivita sessione, boolean isRidotto) {
         this.id = id;
