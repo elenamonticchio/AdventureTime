@@ -231,4 +231,28 @@ public class AdventureTime {
             System.out.println("Capienza massima raggiunta!");
         }
     }
+
+    public void rimborsaBigliettoSessione(String bigliettoId) {
+        Biglietto biglietto = elencoBiglietti.get(bigliettoId);
+        if (biglietto instanceof BigliettoSessione) {
+            SessioneAttivita sessione = ((BigliettoSessione) biglietto).getSessione();
+            float prezzo = biglietto.getPrezzo();
+            LocalDateTime dataOra = sessione.getDataOra();
+            float prezzoFinale = calcolaPrezzo(prezzo, dataOra);
+            System.out.println("Rimborso: " + prezzoFinale + "€");
+            elencoBiglietti.remove(bigliettoId);
+            sessione.decrementaPartecipanti();
+        }
+    }
+
+    public float calcolaPrezzo(float prezzo, LocalDateTime dataOra) {
+        LocalDateTime oraAttuale = LocalDateTime.now();
+        Duration durata = Duration.between(oraAttuale, dataOra);
+
+        if (!durata.isNegative() && durata.toMinutes() < 60) {
+            return prezzo * 0.7f;
+        } else {
+            return prezzo;
+        }
+    }
 }

@@ -400,4 +400,44 @@ public class AdventureTimeTest {
         assertNull(adventureTime.getElencoBiglietti().get("B320"));
     }
 
+    @Test
+    void testRimborsoBigliettoSessione() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        adventureTime.inserisciNuovaAttivita("Trekking", "Passeggiata naturalistica", 60.0f, DifficoltaEnum.FACILE);
+        LocalDateTime dataOra = LocalDateTime.now().plusHours(3);
+        adventureTime.inserisciSessioneAttivita(dataOra, 10, Duration.ofHours(2));
+        adventureTime.confermaInserimento();
+
+        String sessioneId = adventureTime.getAttivitaCorrente().getElencoSessioni().keySet().iterator().next();
+        adventureTime.acquistaBigliettoSessione(sessioneId, false);
+
+        String bigliettoId = "B0";
+        assertTrue(adventureTime.getElencoBiglietti().containsKey(bigliettoId));
+
+        adventureTime.rimborsaBigliettoSessione(bigliettoId);
+
+        assertFalse(adventureTime.getElencoBiglietti().containsKey(bigliettoId));
+        assertEquals(0, adventureTime.getAttivitaCorrente().getSessione("A0S0").getPartecipantiAttuali());
+    }
+
+    @Test
+    void testCalcolaPrezzo_ConPenale() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        float prezzo = 50.0f;
+        LocalDateTime dataOra = LocalDateTime.now().plusMinutes(45);
+
+        float rimborso = adventureTime.calcolaPrezzo(prezzo, dataOra);
+        assertEquals(35.0f, rimborso, 0.01f);
+    }
+
+    @Test
+    void testCalcolaPrezzo_SenzaPenale() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        float prezzo = 50.0f;
+        LocalDateTime dataOra = LocalDateTime.now().plusHours(2);
+
+        float rimborso = adventureTime.calcolaPrezzo(prezzo, dataOra);
+        assertEquals(50.0f, rimborso, 0.01f);
+    }
+
 }

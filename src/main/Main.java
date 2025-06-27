@@ -72,6 +72,9 @@ public class Main {
                     adventureTime.visualizzaElencoAttivita();
                     break;
                 case 5:
+                    System.out.print("Codice biglietto: ");
+                    String bigliettoId = readLineSafe(bf);
+                    adventureTime.rimborsaBigliettoSessione(bigliettoId);
                     break;
                 case 6:
                     adventureTime.visualizzaElencoAttivita();
@@ -168,6 +171,7 @@ public class Main {
             System.out.println("2. Inserisci Nuova Attività");
             System.out.println("3. Monitora Capacità Parco");
             System.out.println("4. Visualizza Elenco Attività");
+            System.out.println("5. Rimborsa Biglietto Sessione");
             System.out.println("6. Elimina Sessione Attività");
             System.out.println("7. Registra Nuova Guida");
             System.out.println("8. Inserisci Sessione Attività");

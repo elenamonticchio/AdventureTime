@@ -68,6 +68,10 @@ public class SessioneAttivita {
         this.partecipantiAttuali++;
     }
 
+    public void decrementaPartecipanti() {
+        this.partecipantiAttuali--;
+    }
+
     @Override
     public String toString() {
         return "id='" + id + '\'' + ", dataOra=" + dataOra + ", capienzaMassima=" + capienzaMassima + ", durata=" + durata;

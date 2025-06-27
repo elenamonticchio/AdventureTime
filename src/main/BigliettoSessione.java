@@ -7,4 +7,8 @@ public class BigliettoSessione extends Biglietto {
         super(id, prezzo);
         this.sessione = sessione;
     }
+
+    public SessioneAttivita getSessione() {
+        return sessione;
+    }
 }
