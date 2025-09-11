@@ -43,8 +43,20 @@ public class Main {
                     adventureTime.acquistaBigliettoSessione(sessioneId, isRidotto);
                     break;
                 case 2:
-                    System.out.print("Nome attività: ");
-                    nome = readLineSafe(bf);
+                    Map<String, TipoAttivita> elenco = adventureTime.getElencoAttivita();
+                    TipoAttivita trovata;
+                    do {
+                        System.out.print("Nome attività: ");
+                        nome = readLineSafe(bf);
+                        trovata = null;
+                        for (TipoAttivita attivita : elenco.values()) {
+                            if (attivita.getNome().equalsIgnoreCase(nome)) {
+                                trovata = attivita;
+                                System.out.println("Attività gia presente!");
+                                break;
+                            }
+                        }
+                    } while (trovata != null);
                     System.out.print("Descrizione: ");
                     String descrizione = readLineSafe(bf);
                     System.out.print("Prezzo: ");
