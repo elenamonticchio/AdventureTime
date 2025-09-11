@@ -18,21 +18,29 @@ public class Main {
         String attivitaId;
         String sessioneId;
         String condizione;
+        String eta;
+        boolean isRidotto;
 
         do {
             switch (scelta = menu(bf)) {
                 case 1:
-                    System.out.print("Nome attività: ");
-                    nome = readLineSafe(bf);
-                    adventureTime.ottieniInfoAttivitaESessioni(nome);
-                    if (!adventureTime.getAttivitaCorrente().ottieniSessioniDisponibili().isEmpty()) {
-                        System.out.print("Id sessione: ");
-                        sessioneId = readLineSafe(bf);
-                        System.out.print("Età inferiora a 12 anni o superiore a 65 anni? s/n: ");
-                        String eta = readLineSafe(bf);
-                        boolean isRidotto = eta.equalsIgnoreCase("s");
-                        adventureTime.acquistaBigliettoSessione(sessioneId, isRidotto);
-                    }
+                    TipoAttivita attivitaCorrente;
+                    do {
+                        System.out.print("Nome attività: ");
+                        nome = readLineSafe(bf);
+                        adventureTime.ottieniInfoAttivitaESessioni(nome);
+                        attivitaCorrente = adventureTime.getAttivitaCorrente();
+
+                        if (attivitaCorrente != null && attivitaCorrente.ottieniSessioniDisponibili().isEmpty()) {
+                            System.out.println("Nessuna sessione disponibile per questa attività. Riprova.");
+                        }
+                    } while (attivitaCorrente == null || attivitaCorrente.ottieniSessioniDisponibili().isEmpty());
+                    System.out.print("Id sessione: ");
+                    sessioneId = readLineSafe(bf);
+                    System.out.print("Età inferiore a 12 anni o superiore a 65 anni? s/n: ");
+                    eta = readLineSafe(bf);
+                    isRidotto = eta.equalsIgnoreCase("s");
+                    adventureTime.acquistaBigliettoSessione(sessioneId, isRidotto);
                     break;
                 case 2:
                     System.out.print("Nome attività: ");
@@ -150,8 +158,8 @@ public class Main {
                     break;
                 case 10:
                     System.out.print("Età inferiora a 12 anni o superiore a 65 anni? s/n: ");
-                    String eta = readLineSafe(bf);
-                    boolean isRidotto = eta.equalsIgnoreCase("s");
+                    eta = readLineSafe(bf);
+                    isRidotto = eta.equalsIgnoreCase("s");
                     adventureTime.acquistaBigliettoIngresso(isRidotto);
                     break;
                 case 0:

@@ -203,6 +203,7 @@ public class AdventureTime {
                 return;
             }
         }
+        this.attivitaCorrente = null;
         System.out.println("Attività non trovata");
     }
 

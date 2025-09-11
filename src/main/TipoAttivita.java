@@ -97,11 +97,7 @@ public class TipoAttivita {
                 sessioniDisponibili.put(sessione.getId(), sessione);
             }
         }
-
-        if (sessioniDisponibili.isEmpty()) {
-            System.out.println("Nessuna sessione disponibile");
-        }
-
+        
         return sessioniDisponibili;
     }
 
