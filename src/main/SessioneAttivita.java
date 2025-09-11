@@ -41,7 +41,7 @@ public class SessioneAttivita {
 
     public void setGuida(Guida guida) {
         this.guida = guida;
-        System.out.println("Package.Guida assegnata alla sessione");
+        System.out.println("Guida assegnata alla sessione");
     }
 
     public int getCapienzaMassima() {

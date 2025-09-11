@@ -164,18 +164,40 @@ public class Main {
                     if (!adventureTime.getElencoAttivita().isEmpty()) {
                         System.out.print("Id attività: ");
                         attivitaId = readLineSafe(bf);
+
                         Map<String, SessioneAttivita> sessioniSenzaGuida = adventureTime.mostraSessioniSenzaGuida(attivitaId);
 
-                        System.out.print("Id sessione: ");
-                        sessioneId = readLineSafe(bf);
-                        SessioneAttivita sessione = sessioniSenzaGuida.get(sessioneId);
-                        Map<String, Guida> guideDisponibili = adventureTime.mostraGuideDisponibili(sessione);
+                        if (sessioniSenzaGuida.isEmpty()) {
+                            System.out.println("Nessuna sessione senza guida disponibile.");
+                            break;
+                        }
+
+                        Map<String, Guida> guideDisponibili;
+                        SessioneAttivita sessione;
+
+                        do {
+                            System.out.print("Id sessione: ");
+                            sessioneId = readLineSafe(bf);
+                            sessione = sessioniSenzaGuida.get(sessioneId);
+
+                            if (sessione == null) {
+                                System.out.println("Id sessione non valido. Riprova.");
+                                guideDisponibili = Map.of();
+                                continue;
+                            }
+
+                            guideDisponibili = adventureTime.mostraGuideDisponibili(sessione);
+                            if (guideDisponibili.isEmpty()) {
+                                System.out.println("Nessuna guida compatibile.");
+                            }
+                        } while (guideDisponibili.isEmpty());
 
                         System.out.print("Id guida: ");
                         String guidaId = readLineSafe(bf);
                         adventureTime.assegnaGuida(sessione, guideDisponibili.get(guidaId));
                     }
                     break;
+
                 case 10:
                     System.out.print("Età inferiora a 12 anni o superiore a 65 anni? s/n: ");
                     eta = readLineSafe(bf);
