@@ -80,10 +80,30 @@ public class Main {
                     adventureTime.visualizzaElencoAttivita();
                     break;
                 case 5:
-                    System.out.print("Codice biglietto: ");
-                    String bigliettoId = readLineSafe(bf);
-                    adventureTime.rimborsaBigliettoSessione(bigliettoId);
+                    Biglietto biglietto;
+                    String bigliettoId;
+                    do {
+                        Map<String, Biglietto> elencoBiglietti = adventureTime.getElencoBiglietti();
+                        System.out.print("Codice biglietto: ");
+                        bigliettoId = readLineSafe(bf);
+                        biglietto = elencoBiglietti.get(bigliettoId);
+                        if (biglietto == null) {
+                            System.out.println("Codice biglietto non valido. Riprova.");
+                        }
+                    } while (biglietto == null);
+
+                    if (biglietto instanceof BigliettoSessione) {
+                        SessioneAttivita sessione = ((BigliettoSessione) biglietto).getSessione();
+                        float prezzoBiglietto = biglietto.getPrezzo();
+                        LocalDateTime dataOra = sessione.getDataOra();
+                        if (LocalDateTime.now().isAfter(dataOra)) {
+                            System.out.println("Sessione Scaduta.");
+                        } else {
+                            adventureTime.rimborsaBigliettoSessione(bigliettoId);
+                        }
+                    }
                     break;
+
                 case 6:
                     adventureTime.visualizzaElencoAttivita();
 
