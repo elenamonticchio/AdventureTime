@@ -440,4 +440,55 @@ public class AdventureTimeTest {
         assertEquals(50.0f, rimborso, 0.01f);
     }
 
+    @Test
+    void testCapacitaLibero() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        for (int i = 0; i < 10; i++) {
+            adventureTime.acquistaBigliettoIngresso(false);
+        }
+
+        adventureTime.monitoraCapacita();
+        String output = outContent.toString();
+
+        assertTrue(output.contains("Visitatori attuali: 10"));
+        assertTrue(output.contains("Stato: Libero"));
+    }
+
+    @Test
+    void testCapacitaAffollato() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        for (int i = 0; i < 224; i++) {
+            adventureTime.acquistaBigliettoIngresso(false);
+        }
+
+        adventureTime.monitoraCapacita();
+        String output = outContent.toString();
+
+        assertTrue(output.contains("Visitatori attuali: 224"));
+        assertTrue(output.contains("Stato: Affollato"));
+    }
+
+    @Test
+    void testCapacitaQuasiPieno() {
+        AdventureTime adventureTime = AdventureTime.getInstance();
+        ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+
+        for (int i = 0; i < 304; i++) {
+            adventureTime.acquistaBigliettoIngresso(false);
+        }
+
+        adventureTime.monitoraCapacita();
+        String output = outContent.toString();
+
+        assertTrue(output.contains("Visitatori attuali: 304"));
+        assertTrue(output.contains("Stato: Quasi pieno o pieno"));
+    }
+
 }
