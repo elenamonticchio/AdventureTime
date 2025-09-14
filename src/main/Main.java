@@ -21,6 +21,10 @@ public class Main {
         String eta;
         boolean isRidotto;
 
+
+        adventureTime.loadGuide("src/main/data/initial_data.json");
+        adventureTime.loadAttivita("src/main/data/initial_data.json");
+
         do {
             switch (scelta = menu(bf)) {
                 case 1:

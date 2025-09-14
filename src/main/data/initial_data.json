@@ -1,0 +1,71 @@
+{
+  "attivita": [
+    {
+      "id": "A0",
+      "nome": "Trekking",
+      "descrizione": "Escursione guidata attraverso sentieri panoramici del parco.",
+      "prezzo": 25.0,
+      "difficolta": "MEDIA"
+    },
+    {
+      "id": "A1",
+      "nome": "Canoa",
+      "descrizione": "Discesa guidata lungo il fiume con canoe singole o doppie.",
+      "prezzo": 30.0,
+      "difficolta": "FACILE"
+    },
+    {
+      "id": "A2",
+      "nome": "Arrampicata",
+      "descrizione": "Corso di arrampicata su roccia con attrezzatura fornita.",
+      "prezzo": 40.0,
+      "difficolta": "DIFFICILE"
+    },
+    {
+      "id": "A3",
+      "nome": "Mountain Bike",
+      "descrizione": "Percorso guidato in mountain bike tra i sentieri del parco.",
+      "prezzo": 35.0,
+      "difficolta": "MEDIA"
+    },
+    {
+      "id": "A4",
+      "nome": "Orienteering",
+      "descrizione": "Attività di orientamento con mappa e bussola per tutti i livelli.",
+      "prezzo": 20.0,
+      "difficolta": "FACILE"
+    }
+  ],
+  "guide": [
+    {
+      "id": "G0",
+      "codiceAttestato": "T001",
+      "nome": "Luca Rossi",
+      "specializzazione": "Trekking"
+    },
+    {
+      "id": "G1",
+      "codiceAttestato": "C002",
+      "nome": "Martina Bianchi",
+      "specializzazione": "Canoa"
+    },
+    {
+      "id": "G2",
+      "codiceAttestato": "A003",
+      "nome": "Giovanni Verdi",
+      "specializzazione": "Arrampicata"
+    },
+    {
+      "id": "G3",
+      "codiceAttestato": "M004",
+      "nome": "Sara Neri",
+      "specializzazione": "Mountain Bike"
+    },
+    {
+      "id": "G4",
+      "codiceAttestato": "O005",
+      "nome": "Marco Gialli",
+      "specializzazione": "Orienteering"
+    }
+  ]
+}

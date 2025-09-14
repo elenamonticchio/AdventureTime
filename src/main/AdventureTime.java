@@ -1,5 +1,10 @@
 package main;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.File;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -254,6 +259,55 @@ public class AdventureTime {
             return prezzo * 0.7f;
         } else {
             return prezzo;
+        }
+    }
+
+    public void loadGuide(String path) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode root = mapper.readTree(new File(path));
+            JsonNode guideNode = root.get("guide");
+
+            if (guideNode != null && guideNode.isArray()) {
+                for (JsonNode node : guideNode) {
+                    String id = node.get("id").asText();
+                    String nome = node.get("nome").asText();
+                    String codiceAttestato = node.get("codiceAttestato").asText();
+                    String specializzazione = node.get("specializzazione").asText();
+
+                    Guida g = new Guida(id, nome, codiceAttestato, specializzazione);
+                    this.elencoGuide.put(id, g);
+                }
+            }
+
+            this.contatoreGuide = elencoGuide.size();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadAttivita(String path) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            JsonNode root = mapper.readTree(new File(path));
+            JsonNode attivitaNode = root.get("attivita");
+
+            if (attivitaNode != null && attivitaNode.isArray()) {
+                for (JsonNode node : attivitaNode) {
+                    String id = node.get("id").asText();
+                    String nome = node.get("nome").asText();
+                    String descrizione = node.get("descrizione").asText();
+                    float prezzo = (float) node.get("prezzo").asDouble();
+                    DifficoltaEnum difficolta = DifficoltaEnum.valueOf(node.get("difficolta").asText());
+
+                    TipoAttivita attivita = new TipoAttivita(id, nome, descrizione, prezzo, difficolta);
+                    this.elencoAttivita.put(id, attivita);
+                }
+            }
+
+            this.contatoreAttivita = elencoAttivita.size();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
